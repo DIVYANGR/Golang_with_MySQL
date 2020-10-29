@@ -80,6 +80,18 @@ func main() {
 		})
 
 	})
+	router.GET("/delete", func(c *gin.Context) {
+		name := c.Query("name")
+		db := dbConn()
+		delForm, err := db.Prepare("DELETE FROM Employee WHERE name=?")
+		if err != nil {
+			panic(err.Error())
+		}
+		delForm.Exec(name)
+		log.Println("DELETE")
+		defer db.Close()
+
+	})
 
 	router.Run(":8080")
 }
